@@ -16,7 +16,12 @@ interface Pokemon {
 }
 
 export default function Page() {
-  const [pokemonData, setPokemonData] = React.useState<PokemonList>({ results: [] } as PokemonList);
+  const [pokemonData, setPokemonData] = React.useState<PokemonList>({
+    count: 0,
+    next: "",
+    previous: null,
+    results: []
+  });
   const [loading, setLoading] = React.useState<boolean>(false);
   const [page, setPage] = React.useState<number>(0);
   const [hasMore, setHasMore] = React.useState<boolean>(true);
@@ -43,29 +48,34 @@ export default function Page() {
   }, [page]);
 
   const loadMore = () => {
-    setPage((prevPage) => prevPage + 1);
+    if (hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
 
   const DisplayPokemonList = () => {
-    if (loading) {
+    if (pokemonData.results.length === 0 && loading) {
       return <p>Loading...</p>;
     }
 
     if (pokemonData.results.length > 0) {
       return (
         <ul className={styles.pokemonList}>
-          {pokemonData.results.map((p, index) => (
-            <li key={p.name} className={styles.pokemonItem}>
-              <img
-                className={styles.cardImgTop}
-                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index + 1 + page * 20}.png`}
-                alt={p.name}
-              />
-              <Link href={`/pokemon/${p.name}`} className={styles.pokemonLink}>
-                {p.name}
-              </Link>
-            </li>
-          ))}
+          {pokemonData.results.map((p, index) => {
+            const pokemonIndex = index + 1 + page * 20 - 20;
+            return (
+              <li key={p.name} className={styles.pokemonItem}>
+                <img
+                  className={styles.cardImgTop}
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`}
+                  alt={p.name}
+                />
+                <Link href={`/pokemon/${p.name}`} className={styles.pokemonLink}>
+                  {p.name}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       );
     }
