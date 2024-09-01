@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import styles from "./page.module.css";
+import styles from "./page.module.css"; // Adjust the path if necessary
 
 interface PokemonList {
   count: number;
-  next: string;
-  previous?: any;
+  next: string | null;
+  previous?: string | null;
   results: Pokemon[];
 }
 
@@ -18,69 +18,56 @@ interface Pokemon {
 export default function Page() {
   const [pokemonData, setPokemonData] = React.useState<PokemonList>({
     count: 0,
-    next: "",
+    next: null,
     previous: null,
-    results: []
+    results: [],
   });
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [page, setPage] = React.useState<number>(0);
-  const [hasMore, setHasMore] = React.useState<boolean>(true);
 
-  React.useEffect(() => {
-    const getData = async (url: string) => {
-      setLoading(true);
-      try {
-        const result = await fetch(url);
-        const res = await result.json();
-        setPokemonData((prevData) => ({
-          ...res,
-          results: [...prevData.results, ...res.results],
-        }));
-        setHasMore(!!res.next);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const [currentPageUrl, setCurrentPageUrl] = React.useState(
+    "https://pokeapi.co/api/v2/pokemon"
+  );
 
-    getData(`https://pokeapi.co/api/v2/pokemon?offset=${page * 20}&limit=20`);
-  }, [page]);
-
-  const loadMore = () => {
-    if (hasMore) {
-      setPage((prevPage) => prevPage + 1);
+  const getData = async () => {
+    try {
+      const result = await fetch(currentPageUrl);
+      const res = await result.json();
+      setPokemonData((prevData) => ({
+        ...res,
+        results: [...prevData.results, ...res.results],
+      }));
+      setCurrentPageUrl(res.next); // Update the URL for the next page
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const DisplayPokemonList = () => {
-    if (pokemonData.results.length === 0 && loading) {
-      return <p>Loading...</p>;
-    }
+  React.useEffect(() => {
+    getData();
+  }, []);
 
-    if (pokemonData.results.length > 0) {
+  const DisplayPokemonList = () => {
+    if (pokemonData && pokemonData.results.length > 0) {
       return (
         <ul className={styles.pokemonList}>
-          {pokemonData.results.map((p, index) => {
-            const pokemonIndex = index + 1 + page * 20 - 20;
-            return (
-              <li key={p.name} className={styles.pokemonItem}>
-                <img
-                  className={styles.cardImgTop}
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex}.png`}
-                  alt={p.name}
-                />
-                <Link href={`/pokemon/${p.name}`} className={styles.pokemonLink}>
-                  {p.name}
-                </Link>
-              </li>
-            );
-          })}
+          {pokemonData.results.map((p, index) => (
+            <li key={index} className={styles.pokemonItem}>
+              <img
+                className={styles.cardImgTop}
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                  index + 1
+                }.png`}
+                alt={p.name}
+              />
+              <Link href={`/pokemon/${p.name}`} className={styles.pokemonLink}>
+                {p.name}
+              </Link>
+            </li>
+          ))}
         </ul>
       );
+    } else {
+      return <p>Loading...</p>;
     }
-
-    return <p>ไม่เจอโปเกมอน</p>;
   };
 
   return (
@@ -91,9 +78,9 @@ export default function Page() {
         alt="Pokémon Logo"
       />
       <DisplayPokemonList />
-      {hasMore && (
-        <button className={styles.loadMoreButton} onClick={loadMore} disabled={loading}>
-          {loading ? "Loading..." : "Load More"}
+      {pokemonData.next && (
+        <button className={styles.loadMoreButton} onClick={getData}>
+          Load More
         </button>
       )}
     </div>
