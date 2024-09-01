@@ -6,10 +6,12 @@
   justify-content: center;
   text-align: center;
   padding: 20px;
-  background-color: rgb(255, 104, 104);
 }
 .header{
+  font-size: 25px;
   color: #ffffff;
   background-color: rgb(255, 104, 104);
   min-height: 100vh;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(45deg, #ffcc00, #ff6600);
 }

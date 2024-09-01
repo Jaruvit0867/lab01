@@ -21,10 +21,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <header className={styles.header}>
         <div>
-          <h1>CIS</h1>
-          <Link href="/">Home</Link>{" - "}<Link href="/pokemon">Pokemon</Link>
-          {" - "}
-          <Link href="/aboutme">AboutMe</Link>
+          <h1>LAB01</h1>
+          <Link href="/">......Home</Link>{"......"}<Link href="/pokemon">Pokemon</Link>
+          {"......"}
+          <Link href="/aboutme">AboutMe......</Link>
         </div>
         {children}
         </header>

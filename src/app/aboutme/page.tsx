@@ -9,20 +9,19 @@ export default function Page() {
         <div id="text-main" className={styles.textMain}>
           <h1 className={styles.about}>About Me</h1>
           <p className={styles.intro}>
-            ผม ชื่อวิชญ์พล ยืนยง เป็นนักศึกษาในมหาวิทยาลัยขอนแก่น วิทยาเขตหนองคาย กำลังเรียนอยู่ชั้นปี 3
+            ผม ชื่อจารุวิทย์ แสงแก้วสิริกุล เป็นนักศึกษาในมหาวิทยาลัยขอนแก่น วิทยาเขตหนองคาย กำลังศึกษาอยู่ชั้นปีที่ 3
           </p>  
           <p className={styles.description}>
-            เกิดปี 2003 ตอนนี้กำลังเรียนอยู่ชั้นปี 3 สาขาเอกวิทยาการคอมพิมเตอร์และสารสนเทศ ชีวิตประจำวันชอบนอนดูหนัง เล่นเกม ผมเป็นคนที่ค่อนข้างเงียบ ไม่ชอบไปไหนถ้าไม่มีตังแฮะๆ
+            เกิดวันที่ 2 พฤษภาคม 2547 งานอดิเรกคือ ชอบเล่นเกม ดูหนัง ฟังเพลง
           </p>
         </div>
-
         <div id="img-main" className={styles.imgMain}>
           <Image 
-            className={styles.witchaphon} 
+            className={styles.border} 
             src={img1}
             alt="Profile Image"
-            width={400}
-            height={500}
+            width={700}
+            height={400}
           />
         </div>
       </div>
