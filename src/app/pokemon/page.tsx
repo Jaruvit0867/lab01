@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import styles from "./page.module.css"; // Adjust the path if necessary
+import styles from "./page.module.css";
 
 interface PokemonList {
   count: number;
@@ -70,7 +70,7 @@ export default function Page() {
       );
     }
 
-    return <p>No Pokémon found.</p>;
+    return <p>ไม่เจอโปเกมอน</p>;
   };
 
   return (
